@@ -26,7 +26,7 @@ Sample implementation from Microsoft
 # Swagger setup with connexion
 
 Example for the application with swagger file. Swagger.json is available at /api/swagger.json
-This version does not contain any swagger UI:w
+This version does not contain any swagger UI, reachable via api/ui/
 
 
 

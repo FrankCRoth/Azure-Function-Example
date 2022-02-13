@@ -23,3 +23,11 @@ Sample implementation from Microsoft
 
 [Github Project](https://github.com/Azure-Samples/flask-app-on-azure-functions)
 
+# Swagger setup with connexion
+
+Example for the application with swagger file. Swagger.json is available at /api/swagger.json
+This version does not contain any swagger UI:w
+
+
+
+

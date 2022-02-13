@@ -14,3 +14,12 @@ Redirect URL is automatically generated as well as client secret. The name of th
 Working example:
 
 https://login.microsoftonline.com/41c58ae6-2fc8-43d0-ba98-f14d3a4aeba5/oauth2/v2.0/authorize?response_type=code&client_id=da30267d-17f4-4cc9-abac-59fe40f8f594&redirect_uri=https://fcrpythonrestapi.azurewebsites.net/.auth/login/aad/callback&scope=openid
+
+# Funtions as Flask Apps
+
+Sample implementation from Microsoft
+
+[Python Azure Function Web API secured by Azure AD](https://docs.microsoft.com/en-us/samples/azure-samples/ms-identity-python-webapi-azurefunctions/ms-identity-python-webapi-azurefunctions/)
+
+[Github Project](https://github.com/Azure-Samples/flask-app-on-azure-functions)
+

@@ -1,18 +1,26 @@
 from readline import append_history_file
 from services.dummy_data import get_todos, add_todo, edit_todo, delete_todo
-from flask import Flask
+from flask import Flask, jsonfiy, request
+
 
 app = Flask(__name__)
 
-@app.route("/get-tasks")
+@app.route("/tasks", methods=['GET'])
 def list_todos():
-    return get_todos()
-
+    return jsonfiy(get_todos())
+    
+@app.route("/tasks/<task>", methods=['POST', 'PUT'])
 def add_todos(task):
-    return add_todo(task)
+    if request.method == 'PUT':
+        edit_todo(task)
+    if request.method == 'POST':
+        add_todo(task)
+    return jsonfiy(get_todos())
 
-def edit_todos(task):
-    return edit_todo(task)
+@app.route("/tasks/<id>", methods=['DELETE'])
+def edit_todos(task_id):
+    delete_todo(task_id)
+    return jsonfiy(get_todos())
 
-def delete_todos(task_id):
-    return delete_todo(task_id)
+if __name__ == "__main__":
+    app.run()

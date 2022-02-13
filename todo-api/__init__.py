@@ -1,4 +1,4 @@
-import logging, json
+import logging
 
 import azure.functions as func
 from services.todo_service import app

@@ -5,4 +5,4 @@
 azure-functions
 Flask
 connexion
-connexion[swagger-ui]
+swagger-ui-bundle

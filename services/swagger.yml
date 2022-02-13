@@ -60,6 +60,17 @@ paths:
       responses:
         201:
           description: Successfully created task in list
+          schema:
+            type: object
+            properties:
+              assignee:
+                type: string
+              id:
+                type: integer
+              status:
+                type: string
+              task:
+                type: string
     put:
       operationId: services.dummy_data.edit_todo
       tags:
@@ -88,7 +99,35 @@ paths:
       responses:
         200:
           description: Successfully updated task in list
-  /task/{id}:
+          schema:
+            type: object
+            properties:
+              assignee:
+                type: string
+              id:
+                type: integer
+              status:
+                type: string
+              task:
+                type: string
+        404:
+          description: Task not found
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+                example:  "Taks with id 10 not found"
+              status: 
+                type: integer
+                example: 404
+              title: 
+                type: string
+                example: Not Found
+              type: 
+                type: string
+                example: blank
+  /task/{task_id}:
     delete:
       operationId: services.dummy_data.delete_todo
       tags:
@@ -96,7 +135,7 @@ paths:
       summary: Delete a task in the task list
       description: Delete one task from the task list
       parameters:
-        - name: id
+        - name: task_id
           in: path
           description: Id of the task to delete from the task list
           type: integer
@@ -104,3 +143,20 @@ paths:
       responses:
         200:
           description: Successfully delete task from task list
+        404:
+          description: Task not found
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+                example:  "Taks with id 10 not found"
+              status: 
+                type: integer
+                example: 404
+              title: 
+                type: string
+                example: Not Found
+              type: 
+                type: string
+                example: blank

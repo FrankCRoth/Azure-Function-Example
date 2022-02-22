@@ -1,61 +1,57 @@
-from flask import abort
+from xml.dom import NotFoundErr
+from connexion import NoContent
+import logging
+import uuid
 
-data = {
-    "todos": [
+TASKS = [
       {
-        "id": 1,
+        "id": str(uuid.uuid4()),
         "task": 'task1',
         "assignee": 'assignee1000',
         "status": 'completed'
       },
       {
-        "id": 2,
+        "id": str(uuid.uuid4()),
         "task": 'task2',
         "assignee": 'assignee1001',
         "status": 'completed'
       },
       {
-        "id": 3,
+        "id": str(uuid.uuid4()),
         "task": 'task3',
         "assignee": 'assignee1002',
         "status": 'completed'
       },
       {
-        "id": 4,
+        "id": str(uuid.uuid4()),
         "task": 'task4',
         "assignee": 'assignee1000',
         "status": 'completed'
-      },
-      
+      }
     ]
-}
 
-def get_todos():
-    return data['todos']
+def get_todos(limit=None, task_status=None):
+  return [task for task in TASKS if not task_status or task['status'] == task_status][:limit]
 
 def add_todo(task):
-    task["id"] = len(data['todos']) + 1
-    data['todos'].append(task)
-    return task, 201
+    task["id"] = str(uuid.uuid4())
+    TASKS.append(task)
+    return TASKS, 201
 
-def edit_todo(task):
-    for i,todo in enumerate(data["todos"]):
-        if todo["id"] == task["id"]:
-           data["todos"][i] = task
-           return task, 200
-    abort (
-      404, "Taks with id {id} not found".format(id=task["id"])
-    )
+def edit_todo(new_task):
+    try:
+        TASKS.remove(next(current_task for current_task in TASKS if current_task.get('id') == new_task.get('id')))
+        TASKS.append(new_task)
+        return new_task, 200
+    except StopIteration:
+        logging.info('Task with id %s not found' % new_task.get('id'))
+    return NoContent, 404
 
 def delete_todo(task_id):
-    item_to_remove = '';
-    for todo in data["todos"]:
-        if int(task_id) == todo["id"]:
-            item_to_remove = todo
-    if item_to_remove:
-        data["todos"].remove(item_to_remove)
-        return "", 204
-    else:
-      abort (
-        404, "Taks with id {id} not found".format(id=task_id)
-      )
+    try:
+        TASKS.remove(next(task for task in TASKS if task.get('id') == task_id))    
+        return NoContent, 204
+    except StopIteration:
+        logging.info('Task withid %s not found' % task_id)
+    return NoContent, 404
+    

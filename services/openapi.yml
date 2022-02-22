@@ -1,0 +1,138 @@
+openapi: 3.0.3
+info:
+  description: This is the swagger file for simple task applicaiton example
+  version: 1.0.0
+  title: Swagger REST Article
+servers:
+  - url: /api
+
+
+# Paths supported by the server application
+paths:
+  /tasks:
+    get:
+      operationId: services.dummy_data.get_todos
+      tags:
+        - Task
+      summary: Lists all Tasks
+      description: Read the list of tasks
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            format: int32
+            minimum: 0
+        - name: task_type
+          in: query
+          schema:
+            type: string
+            enum:
+              - completed
+              - new
+              - running
+      responses:
+        200:
+          description: Successful read task list operation
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  id:
+                    type: string
+                  $ref: '#/components/schemas/Task'
+    post:
+      operationId: services.dummy_data.add_todo
+      tags:
+        - Task
+      summary: Create a task and add it to the tasks list
+      description: Create a new task in the tasks list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              x-body-name: task
+              $ref: '#/components/schemas/PayLoad'
+      responses:
+        201:
+          description: Successfully created task in list
+          content: 
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Task'
+      
+    put:
+      operationId: services.dummy_data.edit_todo
+      tags:
+        - Task
+      summary: Update a task in the tasks list
+      description: Update a task in the tasks list
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              x-body-name: new_task
+              $ref: '#/components/schemas/Task'
+        description: Update Task object
+      responses:
+        200:
+          description: Successfully updated task in list
+          content:
+            applicaiton/json:
+              schema:
+                $ref: '#/components/schemas/Task'                
+        404:
+          description: Task not found
+        
+  /task/{task_id}:
+    delete:
+      operationId: services.dummy_data.delete_todo
+      tags:
+        - Task
+      summary: Delete a task in the task list
+      description: Delete one task from the task list
+      parameters:
+        - name: task_id
+          in: path
+          description: Id of the task to delete from the task list
+          schema:
+            type: string
+          required: True
+      responses:
+        204:
+          description: Successfully delete task from task list
+        404:
+          description: Task not found
+components:
+  schemas:
+    PayLoad:
+      title: New task
+      description: new Task to create
+      type: object
+      required:
+        - assignee
+        - status
+        - task
+      properties:
+        assignee:
+          type: string
+        status:
+          type: string
+        task:
+          type: string
+    Task:
+      title: Task
+      description: Task in task list
+      allOf:
+        - $ref: '#/components/schemas/PayLoad'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: UUID of the task
+        
